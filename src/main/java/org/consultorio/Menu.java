@@ -130,4 +130,22 @@ public class Menu {
         }
 
     }
+    public static void registrarPaciente() {
+        try {
+            System.out.print("Ingrese ID del paciente: ");
+            String id = scanner.nextLine();
+            if (gestorUsuarios.existeUsuario(id)) throw new UserExistsException("");
+            System.out.print("Ingrese nombre del paciente: ");
+            String nombre = scanner.nextLine();
+            System.out.print("Ingrese apellido del paciente: ");
+            String apellido = scanner.nextLine();
+
+            Paciente paciente = new Paciente(id, nombre, apellido);
+            gestorUsuarios.agregarUsuario(paciente);
+            gestorUsuarios.guardarEnArchivo(DB_USUARIOS, gestorUsuarios.getUsuarios());
+            System.out.println("Paciente registrado.");
+        } catch (UserExistsException e){
+            System.out.println("El paciente con ese ID ya existe");
+        }
+    }
 }
