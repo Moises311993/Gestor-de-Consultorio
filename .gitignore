@@ -1,3 +1,6 @@
+## DataBase ##
+src/main/java/org.consultorio/resources/db
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
