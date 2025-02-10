@@ -15,6 +15,10 @@ public class GestorUsuarios {
 
     }
 
+    public boolean eliminarUsuario(String id) {
+        return usuarios.removeIf(usuario -> usuario.getId().equals(id));
+    }
+
     public List<Usuario> getUsuarios() {
         return usuarios;
     }
