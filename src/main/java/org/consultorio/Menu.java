@@ -1,7 +1,11 @@
 package org.consultorio;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.Scanner;
 
+import static org.consultorio.GestorCitas.DB_CITAS;
 import static org.consultorio.GestorUsuarios.DB_ADMIN;
 import static org.consultorio.GestorUsuarios.DB_USUARIOS;
 
@@ -146,6 +150,53 @@ public class Menu {
             System.out.println("Paciente registrado.");
         } catch (UserExistsException e){
             System.out.println("El paciente con ese ID ya existe");
+        }
+    }
+
+    public static LocalDateTime soliticitarFecha(String mensaje){
+        String dateFormatStr = "yyyy-MM-dd HH:mm";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormatStr);
+        while(true){
+            System.out.println(mensaje + "en formato " + dateFormatStr);
+            String fechaHoraStr = scanner.nextLine();
+            try{
+                return LocalDateTime.parse(fechaHoraStr,formatter);
+            } catch (Exception e) {
+                System.out.println("Porfavor ingresa una fecha en el formato solicitado");
+            }
+        }
+    }
+
+
+    public static void crearCita() {
+        try {
+            System.out.print("Ingrese ID de la cita: ");
+            String id = scanner.nextLine();
+            if (gestorCitas.existeCita(id)) throw new AppointmentExistsException("");
+
+            LocalDateTime fechaHora = soliticitarFecha("Ingrese fecha y hora de la cita");
+            System.out.print("Ingrese motivo de la cita: ");
+            String motivo = scanner.nextLine();
+
+            System.out.print("Ingrese ID del doctor: ");
+            String idDoctor = scanner.nextLine();
+            Optional<Usuario> doctor = gestorUsuarios.buscarUsuario(idDoctor);
+            if(doctor.isEmpty()) throw new UserNotFoundException("El doctor ingresado no existe");
+
+            System.out.print("Ingrese ID del paciente: ");
+            String idPaciente = scanner.nextLine();
+            Optional<Usuario> paciente = gestorUsuarios.buscarUsuario(idPaciente);
+            if(paciente.isEmpty()) throw new UserNotFoundException("El paciente ingresado no existe");
+
+            Cita cita = new Cita(id, fechaHora, motivo, (Doctor) doctor.get(), (Paciente) paciente.get());
+            gestorCitas.registrarCita(cita);
+            gestorCitas.guardarEnArchivo(DB_CITAS, gestorCitas.listarCitas());
+            System.out.println("Cita creada.");
+
+        } catch (UserNotFoundException e){
+            System.out.println(e.getMessage());
+        } catch (AppointmentExistsException e){
+            System.out.println("La cita con este ID ya existe");
         }
     }
 }
