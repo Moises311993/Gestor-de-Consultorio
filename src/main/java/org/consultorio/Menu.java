@@ -199,4 +199,14 @@ public class Menu {
             System.out.println("La cita con este ID ya existe");
         }
     }
+
+    private static void eliminarCita() {
+        System.out.print("Ingrese ID de la cita a eliminar: ");
+        String id = scanner.nextLine();
+        if(gestorCitas.eliminarCita(id)){
+            System.out.println("La cita se eliminó exitosamente");
+        } else {
+            System.out.println("La cita con ese ID no existe");
+        }
+    }
 }
