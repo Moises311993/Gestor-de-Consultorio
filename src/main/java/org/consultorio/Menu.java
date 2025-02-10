@@ -1,6 +1,11 @@
 package org.consultorio;
 
+import java.util.Scanner;
+
+import static org.consultorio.GestorUsuarios.DB_ADMIN;
+
 public class Menu {
+    private static final Scanner scanner = new Scanner(System.in);
     private static final GestorUsuarios gestorUsuarios = new GestorUsuarios();
     private static final GestorCitas gestorCitas = new GestorCitas();
 
@@ -45,4 +50,35 @@ public class Menu {
 
         });
     }
+
+
+    public static void crearAdministrador() {
+        System.out.println("Por favor, ingresa el nombre de usuario para el administrador:");
+        String usuario = scanner.nextLine();
+
+        System.out.println("Por favor, ingresa una contraseña para el administrador:");
+        String contraseña = scanner.nextLine();
+
+        gestorUsuarios.setAdministrador(new Administrador( usuario, contraseña));
+        gestorUsuarios.guardarEnArchivo(DB_ADMIN, gestorUsuarios.getAdministrador());
+    }
+    public static boolean autenticarUsuario() {
+        if(gestorUsuarios.getAdministrador() == null) {
+            crearAdministrador();
+            return true;
+        } else {
+            System.out.println("Por favor, ingresa tu nombre de usuario:");
+            String usuario = scanner.nextLine();
+            System.out.println("Por favor, ingresa tu contraseña:");
+            String contrasena = scanner.nextLine();
+            boolean isAdmin = gestorUsuarios.getAdministrador().autenticar(usuario,contrasena);
+            if(isAdmin) {
+                System.out.println("Bienvenido superusuario administrador");
+            } else {
+                System.out.println("Credenciales incorrectas");
+            }
+            return isAdmin;
+        }
+    }
+
 }
