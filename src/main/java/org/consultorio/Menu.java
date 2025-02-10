@@ -81,4 +81,21 @@ public class Menu {
         }
     }
 
+
+    public static void cambiarCredenciales(){
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Ingresa el nuevo nombre de usuario:");
+        String nuevoUsuario = scanner.nextLine();
+
+        System.out.println("Ingresa la nueva contraseña:");
+        String nuevaContrasena = scanner.nextLine();
+
+        gestorUsuarios.getAdministrador().setUsuario(nuevoUsuario);
+        gestorUsuarios.getAdministrador().setContraseña(nuevaContrasena);
+
+        // Guardar los nuevos datos del administrador en JSON
+        gestorUsuarios.guardarEnArchivo(DB_ADMIN, gestorUsuarios.getAdministrador());
+    }
+
 }
