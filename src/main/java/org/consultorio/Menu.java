@@ -19,6 +19,54 @@ public class Menu {
     }
 
 
+    public static void mostrarMenuPublico() {
+        boolean continuar = true;
+        boolean login = false;
+        while (continuar && !login) {
+            System.out.println("\n--- Menú ---");
+            System.out.println("0. Ver Doctores disponibles");
+            System.out.println("1. Ver Pacientes registrados");
+            System.out.println("2. Ver Citas disponibes");
+            System.out.println("3. Salir");
+
+            int opcion = solicitarEntero("Seleccione una opción: ");
+
+            switch (opcion) {
+                case 0:
+                    listarDoctores();
+                    break;
+                case 1:
+                    listarPacientes();
+                    break;
+                case 2:
+                    listarCitas();
+                    break;
+
+                case 3:
+                    continuar = false;
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        }
+
+    }
+
+    public static int solicitarEntero(String mensaje){
+        int numero;
+        while(true){
+            System.out.println(mensaje);
+            try{
+                numero = scanner.nextInt();
+                scanner.nextLine();
+                return numero;
+            } catch (Exception e) {
+                System.out.println("Porfavor ingresa un número entero como respuesta");
+                scanner.nextLine();
+            }
+        }
+    }
+
 
     public static void listarDoctores() {
         if(gestorUsuarios.listarUsuarios().stream().noneMatch(u -> u instanceof Doctor)){
@@ -209,4 +257,5 @@ public class Menu {
             System.out.println("La cita con ese ID no existe");
         }
     }
+
 }
