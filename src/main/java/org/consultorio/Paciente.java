@@ -1,5 +1,8 @@
 package org.consultorio;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonTypeName("paciente")
 public class Paciente extends Usuario {
 
     public Paciente(){

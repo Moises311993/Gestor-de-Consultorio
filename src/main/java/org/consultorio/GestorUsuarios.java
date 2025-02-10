@@ -15,17 +15,26 @@ public class GestorUsuarios implements Serializador{
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
 
+    private ListaUsuarios usuarios = new ListaUsuarios();
 
-    private List<Usuario> usuarios;
 
 
     public void agregarUsuario(Usuario usuario) {
-        usuarios.add(usuario);
+        usuarios.getUsuarios().add(usuario);
 
     }
 
-    public List<Usuario> listarUsuarios() {
+    public ListaUsuarios getUsuarios() {
         return usuarios;
+    }
+
+
+    public boolean eliminarUsuario(String id) {
+        return usuarios.getUsuarios().removeIf(usuario -> usuario.getId().equals(id));
+    }
+
+    public List<Usuario> listarUsuarios() {
+        return usuarios.getUsuarios();
     }
 
     public Optional<Usuario> buscarUsuario(String id){
@@ -39,13 +48,6 @@ public class GestorUsuarios implements Serializador{
         return buscarUsuario(id).isPresent();
     }
 
-    public boolean eliminarUsuario(String id) {
-        return usuarios.removeIf(usuario -> usuario.getId().equals(id));
-    }
-
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
 
     @Override
     public <T> void guardarEnArchivo(String archivo, T objeto) {
@@ -71,9 +73,7 @@ public class GestorUsuarios implements Serializador{
     public <T>  void cargarDesdeArchivo(String archivo, Class<T> tipo) {
 
         try {
-
-                this.usuarios = objectMapper.readValue(new File(archivo), new TypeReference<List<Usuario>>() {
-                });
+            this.usuarios = objectMapper.readValue(new File(archivo), ListaUsuarios.class);
 
         } catch (IOException e) {
         }

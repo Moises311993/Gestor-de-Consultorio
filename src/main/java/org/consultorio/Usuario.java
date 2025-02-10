@@ -1,5 +1,14 @@
 package org.consultorio;
 
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Doctor.class, name = "doctor"),
+        @JsonSubTypes.Type(value = Paciente.class, name = "paciente")
+})
 public abstract class Usuario {
     protected String id;
     protected String nombre;
