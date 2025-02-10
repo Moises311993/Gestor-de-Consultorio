@@ -1,7 +1,5 @@
 package org.consultorio;
 
-
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
@@ -9,11 +7,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-public class GestorUsuarios implements Serializador{
+
+public class GestorUsuarios implements Serializador {
     private static final String DB_DIR = "src/main/resources/db";
     public static final String DB_USUARIOS = DB_DIR + "/usuarios.json";
+    public static final String DB_ADMIN = DB_DIR + "/admin.json";
 
-    private final static ObjectMapper objectMapper = new ObjectMapper();
+    private final static ObjectMapper objectMapperUser = new ObjectMapper();
+    private final static ObjectMapper objectMapperAdmin = new ObjectMapper();
+
+    private Administrador administrador;
 
     private ListaUsuarios usuarios = new ListaUsuarios();
 
@@ -28,6 +31,13 @@ public class GestorUsuarios implements Serializador{
         return usuarios;
     }
 
+    public Administrador getAdministrador() {
+        return this.administrador;
+    }
+
+    public void setAdministrador(Administrador administrador) {
+        this.administrador = administrador;
+    }
 
     public boolean eliminarUsuario(String id) {
         return usuarios.getUsuarios().removeIf(usuario -> usuario.getId().equals(id));
@@ -48,7 +58,6 @@ public class GestorUsuarios implements Serializador{
         return buscarUsuario(id).isPresent();
     }
 
-
     @Override
     public <T> void guardarEnArchivo(String archivo, T objeto) {
         File file = new File(archivo);
@@ -63,7 +72,11 @@ public class GestorUsuarios implements Serializador{
         }
 
         try {
-            objectMapper.writeValue(new File(archivo), objeto);
+            if(archivo.equals(DB_ADMIN)){
+                objectMapperAdmin.writeValue(new File(archivo), objeto);
+            } else {
+                objectMapperUser.writeValue(new File(archivo), objeto);
+            }
         } catch (IOException e) {
             System.out.println("Error al guardar el archivo: " + e.getMessage());
         }
@@ -73,11 +86,13 @@ public class GestorUsuarios implements Serializador{
     public <T>  void cargarDesdeArchivo(String archivo, Class<T> tipo) {
 
         try {
-            this.usuarios = objectMapper.readValue(new File(archivo), ListaUsuarios.class);
-
+            if(archivo.equals(DB_ADMIN)){
+                this.administrador = objectMapperAdmin.readValue(new File(archivo), Administrador.class);
+            } else {
+                this.usuarios = objectMapperUser.readValue(new File(archivo), ListaUsuarios.class);
+            }
         } catch (IOException e) {
         }
     }
-
 
 }

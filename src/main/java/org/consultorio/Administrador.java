@@ -1,6 +1,9 @@
 package org.consultorio;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Administrador{
     private String usuario;
     private String contraseña;
@@ -8,8 +11,10 @@ public class Administrador{
     public Administrador(){
     }
 
-    public Administrador( String usuario,
-                          String contraseña) {
+
+    @JsonCreator
+    public Administrador(@JsonProperty("id") String usuario,
+                         @JsonProperty("contraseña") String contraseña) {
         this.usuario = usuario;
         this.contraseña = contraseña;
     }
