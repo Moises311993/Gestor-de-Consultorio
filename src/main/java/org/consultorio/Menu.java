@@ -14,8 +14,16 @@ public class Menu {
     private static final GestorUsuarios gestorUsuarios = new GestorUsuarios();
     private static final GestorCitas gestorCitas = new GestorCitas();
 
-    public static void main(String args[]){
+    public static void main(String[] args) {
 
+        gestorUsuarios.cargarDesdeArchivo(DB_USUARIOS, ListaUsuarios.class);
+        gestorCitas.cargarDesdeArchivo(DB_CITAS, ListaUsuarios.class);
+        gestorUsuarios.cargarDesdeArchivo(DB_ADMIN, Administrador.class);
+
+
+        if(gestorUsuarios.getAdministrador() == null) crearAdministrador();
+        mostrarMenuPublico();
+        scanner.close();
     }
 
 
