@@ -27,7 +27,8 @@ public class Menu {
             System.out.println("0. Ver Doctores disponibles");
             System.out.println("1. Ver Pacientes registrados");
             System.out.println("2. Ver Citas disponibes");
-            System.out.println("3. Salir");
+            System.out.println("3. Iniciar sesion como Admin");
+            System.out.println("4. Salir");
 
             int opcion = solicitarEntero("Seleccione una opción: ");
 
@@ -41,15 +42,72 @@ public class Menu {
                 case 2:
                     listarCitas();
                     break;
-
                 case 3:
+                    login = autenticarUsuario();
+                    break;
+                case 4:
                     continuar = false;
                     break;
                 default:
                     System.out.println("Opción no válida.");
             }
         }
+        if(login){
+            mostrarMenuAdministrador();
+        }
+    }
+    public static void mostrarMenuAdministrador() {
+        boolean continuar = true;
+        while (continuar) {
+            System.out.println("\n--- Menú ADMIN ---");
+            System.out.println("0. Registrar Doctor");
+            System.out.println("1. Registrar Paciente");
+            System.out.println("2. Crear Cita");
+            System.out.println("3. Eliminar usuario (paciente o doctor)");
+            System.out.println("4. Eliminar cita");
+            System.out.println("5. Listar Doctores");
+            System.out.println("6. Listar Pacientes");
+            System.out.println("7. Listar Citas");
+            System.out.println("8. Cambiar credenciales");
+            System.out.println("9. Salir");
 
+            int opcion = solicitarEntero("Seleccione una opción: ");
+
+            switch (opcion) {
+                case 0:
+                    registrarDoctor();
+                    break;
+                case 1:
+                    registrarPaciente();
+                    break;
+                case 2:
+                    crearCita();
+                    break;
+                case 3:
+                    eliminarUsuario();
+                    break;
+                case 4:
+                    eliminarCita();
+                    break;
+                case 5:
+                    listarDoctores();
+                    break;
+                case 6:
+                    listarPacientes();
+                    break;
+                case 7:
+                    listarCitas();
+                    break;
+                case 8:
+                    cambiarCredenciales();
+                    break;
+                case 9:
+                    continuar = false;
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        }
     }
 
     public static int solicitarEntero(String mensaje){
