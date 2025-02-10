@@ -3,6 +3,7 @@ package org.consultorio;
 import java.util.Scanner;
 
 import static org.consultorio.GestorUsuarios.DB_ADMIN;
+import static org.consultorio.GestorUsuarios.DB_USUARIOS;
 
 public class Menu {
     private static final Scanner scanner = new Scanner(System.in);
@@ -96,6 +97,28 @@ public class Menu {
 
         // Guardar los nuevos datos del administrador en JSON
         gestorUsuarios.guardarEnArchivo(DB_ADMIN, gestorUsuarios.getAdministrador());
+    }
+
+    public static void registrarDoctor() {
+        try{
+            System.out.print("Ingrese ID del doctor: ");
+            String id = scanner.nextLine();
+            if(gestorUsuarios.existeUsuario(id)) throw new UserExistsException("");
+            System.out.print("Ingrese nombre del doctor: ");
+            String nombre = scanner.nextLine();
+            System.out.print("Ingrese apellido del doctor: ");
+            String apellido = scanner.nextLine();
+            System.out.print("Ingrese especialidad del doctor: ");
+            String especialidad = scanner.nextLine();
+
+            Doctor doctor = new Doctor(id, nombre, apellido, especialidad);
+            gestorUsuarios.agregarUsuario(doctor);
+            gestorUsuarios.guardarEnArchivo(DB_USUARIOS, gestorUsuarios.getUsuarios());
+            System.out.println("Doctor registrado.");
+        } catch (UserExistsException e){
+            System.out.println("El doctor con ese ID ya existe");
+        }
+
     }
 
 }
