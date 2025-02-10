@@ -120,5 +120,14 @@ public class Menu {
         }
 
     }
+    private static void eliminarUsuario() {
+        System.out.print("Ingrese ID del usuario a eliminar: ");
+        String id = scanner.nextLine();
+        if(gestorUsuarios.eliminarUsuario(id)){
+            System.out.println("El usuario se eliminó exitosamente");
+        } else {
+            System.out.println("El usuario con ese ID no existe");
+        }
 
+    }
 }
